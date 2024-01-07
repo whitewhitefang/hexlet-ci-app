@@ -20,10 +20,25 @@ jobs:
 
         with:
           node-version: 18
+          cache: 'npm'
 
       - name: install app
 
         run: make setup
+
+      - name: Checkout branch
+
+        uses: actions/checkout@master
+
+      - name: Run Snyk to check for vulnerabilities
+
+        uses: snyk/actions/node@master
+
+        env:          
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+        with:
+          args: --severity-threshold=high
 
       - name: run linter
 
